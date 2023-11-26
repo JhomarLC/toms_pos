@@ -23,8 +23,8 @@ var KTUsersList1 = (function () {
 		});
 	};
 
-	// Handle category filter dropdown
-	var handleCategoryFilter = () => {
+	// Handle role filter dropdown
+	var handleRoleFilter = () => {
 		const filterStatus = document.querySelector(
 			'[data-kt-ecommerce-order-filter="role"]'
 		);
@@ -34,6 +34,20 @@ var KTUsersList1 = (function () {
 				value = "";
 			}
 			datatable.column(0).search(value).draw();
+		});
+	};
+
+	// Handle role filter dropdown
+	var handleCategoryFilter = () => {
+		const filterStatus = document.querySelector(
+			'[data-kt-ecommerce-order-filter="category"]'
+		);
+		$(filterStatus).on("change", (e) => {
+			let value = e.target.value;
+			if (value === "All") {
+				value = "";
+			}
+			datatable.column(2).search(value).draw();
 		});
 	};
 
@@ -171,6 +185,7 @@ var KTUsersList1 = (function () {
 			// Trigger the filter action
 			// handleFilterDatatable();
 			handleCategoryFilter();
+			handleRoleFilter();
 			handleClearFlatpickr();
 		},
 	};

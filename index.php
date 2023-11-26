@@ -92,8 +92,7 @@
                         <!--begin::Wrapper-->
                         <div class="d-flex flex-center flex-column flex-column-fluid pb-15 pb-lg-20">
                             <!--begin::Form-->
-                            <form class="form w-100" novalidate="novalidate" action="controllers/user_credentials.php"
-                                method="POST">
+                            <form class="form w-100" id="form_login">
                                 <!--begin::Heading-->
                                 <div class="text-center mb-11">
                                     <!--begin::Title-->
@@ -138,7 +137,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <!--begin::Input wrapper-->
-                                <div class="position-relative mb-8" data-kt-password-meter="true">
+                                <div class="position-relative fv-row mb-8" data-kt-password-meter="true">
                                     <input class="form-control form-control-lg form-control-solid" type="password"
                                         placeholder="Password" name="password" autocomplete="off" />
                                     <!--begin::Visibility toggle-->
@@ -162,7 +161,7 @@
                                 <!--end::Input wrapper-->
                                 <!--begin::Submit button-->
                                 <div class="d-grid mb-10 mt-5">
-                                    <button type="submit" name="login" id="kt_sign_in_submit" class="btn btn-primary">
+                                    <button type="submit" name="login" id="sign_in_submit" class="btn btn-primary">
                                         <!--begin::Indicator label-->
                                         <span class="indicator-label">Sign In</span>
                                         <!--end::Indicator label-->
@@ -199,7 +198,8 @@
     <script src="assets/js/scripts.bundle.js"></script>
     <!--end::Global Javascript Bundle-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="assets/js/custom/authentication/sign-in/general.js"></script>
+    <!-- <script src="assets/js/custom/authentication/sign-in/general.js"></script> -->
+    <script src="assets/js/custom/scripts/login.js"></script>
     <!--end::Custom Javascript-->
     <script src="assets/js/custom/validation.js"></script>
     <!--end::Javascript-->
