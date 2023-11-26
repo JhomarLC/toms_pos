@@ -209,13 +209,7 @@
                                                         <span class="path4"></span>
                                                         <span class="path5"></span>
                                                     </i>
-                                                    <span class="indicator-label">
-                                                        Delete
-                                                    </span>
-                                                    <span class="indicator-progress">
-                                                        Please wait... <span
-                                                            class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                                    </span>
+                                                    Delete
                                                 </button>
                                                 <?php } else { ?>
                                                 <button type="button" class="btn btn-sm btn-light-success" disabled>

@@ -2,169 +2,6 @@
 session_start();
 require("./db_connection.php");
 
-if(isset($_POST['item-add'])){
-    if(isset($_COOKIE['correct_values'])){
-        setcookie("correct_values", "", time() - 3600, "/", "", true, true);
-    }
-    $category_id = mysqli_real_escape_string($connection, $_POST['category_id']);
-    $item_name = mysqli_real_escape_string($connection, $_POST['item_name']);
-    $price = mysqli_real_escape_string($connection, $_POST['price']);
-    $description = mysqli_real_escape_string($connection, $_POST['description']);
-
-    $target_dir = "../images/uploads/";
-    $target_file = $target_dir . basename($_FILES["item_image"]["name"]);
-    $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-    $file_name = uniqid();
-    // Create a new name for the uploaded file (you can use a variety of methods to generate a unique name)
-    $new_file_name = "TOMSITEM" . $file_name . "." . $imageFileType;
-
-    $target_file = $target_dir . $new_file_name;
-    include("./upload.php");
-
-    if($uploadOk == 1){
-        $query = "INSERT INTO items (category_id, item_name, price, image, description) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $connection->prepare($query);
-        $stmt->bind_param("isiss", $category_id, $item_name, $price, $new_file_name, $description);
-        $stmt->execute();
-        if($stmt->affected_rows > 0){
-            if(move_uploaded_file($_FILES["item_image"]["tmp_name"], $target_file)){
-                $_SESSION['alert'] = array(
-                    "message" => "Item successfully added!",
-                    "type" => "success"
-                );  
-                
-                $activity_description = "Add new menu item";
-                include("../controllers/activitylog.php");
-        
-                header("Location: ../admin/menu");
-            } else {
-                $_SESSION['alert'] = array(
-                    "message" => "Sorry, there was an error uploading your file.",
-                    "type" => "error"
-                );  
-            }
-        } else {
-            $_SESSION['alert'] = array(
-                "message" => "No new menu item created.",
-                "type" => "info"
-            );
-            header("Location: ../admin/menu");
-        }
-        $stmt->close();
-    } else {
-        $_SESSION['alert'] = array(
-            "message" => "Please upload valid image only",
-            "type" => "error"
-        );
-        $correctValues = array(
-            "category_id" => $category_id, 
-            "item_name" => $item_name, 
-            "price" => $price, 
-            "description" => $description, 
-        );
-    
-        setcookie("correct_values", json_encode($correctValues), time() + 3600, "/", "", true, true);
-
-        header("Location: ../admin/menu/item-add");
-    }
-}
-if (isset($_POST['item-edit'])) {
-    $item_id = mysqli_real_escape_string($connection, $_POST['item_id']);
-    $category_id = mysqli_real_escape_string($connection, $_POST['category_id']);
-    $item_name = mysqli_real_escape_string($connection, $_POST['item_name']);
-    $image_old = mysqli_real_escape_string($connection, $_POST['image_old']);
-    $price = mysqli_real_escape_string($connection, $_POST['price']);
-    $description = mysqli_real_escape_string($connection, $_POST['description']);
-
-    $uploadOk = 1;
-    $target_dir = "../images/uploads";
-
-    // Check if a file was uploaded
-    if (isset($_FILES['item_image']['name']) && !empty($_FILES['item_image']['name'])) {
-        $image = mysqli_real_escape_string($connection, $_FILES['item_image']['name']);
-        $target_file = $target_dir . "/" . basename($_FILES["item_image"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        $file_name = uniqid();
-        // Create a new name for the uploaded file (you can use a variety of methods to generate a unique name)
-        $new_file_name = "TOMSITEM" . $file_name . "." . $imageFileType;
-        $target_file = $target_dir . "/" . $new_file_name;
-
-        if ($uploadOk == 1) {
-            if (move_uploaded_file($_FILES["item_image"]["tmp_name"], $target_file)) {
-                // Image uploaded successfully
-                // Delete the old image
-                if (file_exists($target_dir . "/" . $image_old)) {
-                    unlink($target_dir . "/" . $image_old);
-                }
-
-                $query = "UPDATE items SET category_id = ?, item_name = ?, price = ?, image = ?, description = ? WHERE item_id = ?";
-                $stmt = $connection->prepare($query);
-                $stmt->bind_param("isissi", $category_id, $item_name, $price, $new_file_name, $description, $item_id);
-                $stmt->execute();
-
-                if ($stmt->affected_rows > 0) {
-                    // Database update successful
-                    $_SESSION['alert'] = array(
-                        "message" => "Item successfully updated!",
-                        "type" => "success"
-                    );
-
-                    $activity_description = "Update menu item";
-                    include("../controllers/activitylog.php");
-
-                    header("Location: ../admin/menu");
-                } else {
-                    $_SESSION['alert'] = array(
-                        "message" => "No new menu item created.",
-                        "type" => "info"
-                    );
-                    header("Location: ../admin/menu");
-                }
-
-                $stmt->close();
-            } else {
-                $_SESSION['alert'] = array(
-                    "message" => "Sorry, there was an error uploading your file.",
-                    "type" => "error"
-                );
-            }
-        } else {
-            $_SESSION['alert'] = array(
-                "message" => "Please upload a valid image only",
-                "type" => "error"
-            );
-            header("Location: ../admin/menu/item-edit");
-        }
-    } else {
-        // No file uploaded, use the existing image value
-        $query = "UPDATE items SET category_id = ?, item_name = ?, price = ?, description = ? WHERE item_id = ?";
-        $stmt = $connection->prepare($query);
-        $stmt->bind_param("isisi", $category_id, $item_name, $price, $description, $item_id);
-        $stmt->execute();
-
-        if ($stmt->affected_rows > 0) {
-            $_SESSION['alert'] = array(
-                "message" => "Item successfully updated!",
-                "type" => "success"
-            );
-
-            $activity_description = "Update menu item";
-            include("../controllers/activitylog.php");
-
-            header("Location: ../admin/menu");
-        } else {
-            $_SESSION['alert'] = array(
-                "message" => "No new menu item created.",
-                "type" => "info"
-            );
-            header("Location: ../admin/menu");
-        }
-
-        $stmt->close();
-    }
-}
-
 if(isset($_POST['action'])){
     if($_POST['action'] == "get_category_details"){
         $category_id = mysqli_real_escape_string($connection, $_POST['category_id']);
@@ -212,14 +49,16 @@ if(isset($_POST['action'])){
                 $stmt->execute();
                 if($stmt->affected_rows > 0){
                     if(move_uploaded_file($_FILES["category_image"]["tmp_name"], $target_file)){
+                        $activity_description = "Added new menu category";
+                        $activity_category = "Menu Category";
+                        include("./activitylog.php");
+                        
                         echo json_encode(
                             array(
                                 "message" => "Category successfully added!",
                                 "type" => "success"
                             )
                         );
-                        $activity_description = "Add new menu category";
-                        include("../controllers/activitylog.php");
                         exit;
                     } else {
                         echo json_encode(
@@ -249,14 +88,16 @@ if(isset($_POST['action'])){
             $stmt->execute();
             
             if($stmt->affected_rows > 0){
+                $activity_description = "Added new menu category";
+                $activity_category = "Menu Category";
+                include("./activitylog.php");
+                
                 echo json_encode(
                     array(
                         "message" => "Category successfully added!",
                         "type" => "success"
                     )
                 );
-                $activity_description = "Added new menu category";
-                include("./activitylog.php");
                 exit;
             } else {
                 echo json_encode(
@@ -300,6 +141,10 @@ if(isset($_POST['action'])){
                 $stmt->execute();
                 if($stmt->affected_rows > 0){
                     if(move_uploaded_file($_FILES["item_image"]["tmp_name"], $target_file)){
+                        $activity_description = "Added new menu item";
+                        $activity_category = "Menu Item";
+                        include("./activitylog.php");
+                        
                         echo json_encode(
                             array(
                                 "message" => "Item successfully added!",
@@ -343,8 +188,10 @@ if(isset($_POST['action'])){
             $stmt->bind_param("isiss", $category_id, $item_name, $price, $default_img_name, $description);
             $stmt->execute();
             if($stmt->affected_rows > 0){
-                $activity_description = "Add new menu item";
+                $activity_description = "Added new menu item";
+                $activity_category = "Menu Item";
                 include("./activitylog.php");
+                
                 echo json_encode(
                     array(
                         "message" => "Item successfully added!",
@@ -398,8 +245,10 @@ if(isset($_POST['action'])){
                     $stmt->execute();
                     
                     if ($stmt->affected_rows > 0) {
-                        $activity_description = "Update menu category";
+                        $activity_description = "Updated the menu category";
+                        $activity_category = "Menu Category";
                         include("./activitylog.php");
+                        
                         echo json_encode(
                             array(
                                 "message" => "Category successfully updated!",
@@ -444,6 +293,10 @@ if(isset($_POST['action'])){
             $stmt->execute();
           
             if($stmt->affected_rows > 0){
+                $activity_description = "Updated the menu category";
+                $activity_category = "Menu Category";
+                include("./activitylog.php");
+                
                 echo json_encode(
                     array(
                         "message" => "Category successfully updated!",
@@ -525,8 +378,10 @@ if(isset($_POST['action'])){
                     $stmt->execute();
     
                     if ($stmt->affected_rows > 0) {
-                        $activity_description = "Update menu item";
+                        $activity_description = "Updated the menu item";
+                        $activity_category = "Menu Item";
                         include("./activitylog.php");
+                        
                         echo json_encode(
                             array(
                                 "message" => "Item successfully updated!",
@@ -535,8 +390,6 @@ if(isset($_POST['action'])){
                         );
                         exit;
                     } else {
-                        $activity_description = "Update menu item";
-                        include("./activitylog.php");
                         echo json_encode(
                             array(
                                 "message" => "No new menu item created.",
@@ -572,8 +425,10 @@ if(isset($_POST['action'])){
             $stmt->execute();
     
             if ($stmt->affected_rows > 0) {
-                $activity_description = "Update menu item";
+                $activity_description = "Updated the menu item";
+                $activity_category = "Menu Item";
                 include("./activitylog.php");
+                
                 echo json_encode(
                     array(
                         "message" => "Item successfully updated!",
@@ -604,6 +459,10 @@ if(isset($_POST['action'])){
         $stmt->execute();
 
         if($stmt->affected_rows > 0){
+            $activity_description = ucfirst($status) . " menu item";
+            $activity_category = "Menu Item";
+            include("./activitylog.php");
+            
             echo json_encode(
                 array(
                     "message" => "Item successfully " . $status,
@@ -633,6 +492,10 @@ if(isset($_POST['action'])){
         $stmt->execute();
 
         if($stmt->affected_rows > 0){
+            $activity_description = ucfirst($status) . " menu category";
+            $activity_category = "Menu Category";
+            include("./activitylog.php");
+                
             echo json_encode(
                 array(
                     "message" => "Category successfully " . $status,

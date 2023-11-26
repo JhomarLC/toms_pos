@@ -12,8 +12,10 @@ if(isset($_POST['action'])){
         $stmt->bind_param("si", $expense_name, $amount);
         $stmt->execute();
         if($stmt->affected_rows > 0){
-            $activity_description = "Add new expense inventory";
-            include("../controllers/activitylog.php");
+            $activity_description = "Added expense $expense_name";
+            $activity_category = "Expense";
+            include("./activitylog.php");
+            
             echo json_encode(
                 array(
                     "message" => "Expense successfully added!",
@@ -64,8 +66,10 @@ if(isset($_POST['action'])){
         $stmt->execute();
         
         if ($stmt->affected_rows > 0) {
-            // $activity_description = "Update expense";
-            // include("./activitylog.php");
+            $activity_description = "Updated the expense $expense_name";
+            $activity_category = "Expense";
+            include("./activitylog.php");
+            
             echo json_encode(
                 array(
                     "message" => "Expense successfully updated!",
@@ -87,14 +91,27 @@ if(isset($_POST['action'])){
     if($_POST['action'] == "delete_expense"){
         $expense_id = mysqli_real_escape_string($connection, $_POST['expense_id']);
 
-        $query = "DELETE FROM expenseInventory WHERE expense_id = ?";
-        $stmt = $connection->prepare($query);
-        $stmt->bind_param("i", $expense_id);
-        $stmt->execute();
+         // Retrieve details before deletion
+        $selectQuery = "SELECT * FROM expenseInventory WHERE expense_id = ?";
+        $selectStmt = $connection->prepare($selectQuery);
+        $selectStmt->bind_param("i", $expense_id);
+        $selectStmt->execute();
+        $result = $selectStmt->get_result();
+
+        // Fetch details from the result set
+        $deletedExpenseDetails = $result->fetch_assoc();
+
+        // Now proceed with the deletion
+        $deleteQuery = "DELETE FROM expenseInventory WHERE expense_id = ?";
+        $deleteStmt = $connection->prepare($deleteQuery);
+        $deleteStmt->bind_param("i", $expense_id);
+        $deleteStmt->execute();
         
-        if ($stmt->affected_rows > 0) {
-            // $activity_description = "Update expense";
-            // include("./activitylog.php");
+        if ($deleteStmt->affected_rows > 0) {
+            $activity_description = "Deleted an expense " . $deletedExpenseDetails['expense_name'];
+            $activity_category = "Expense";
+            include("./activitylog.php");
+            
             echo json_encode(
                 array(
                     "message" => "Expense successfully deleted!",

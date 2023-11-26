@@ -13,6 +13,10 @@ if(isset($_POST['action'])){
         $stmt->execute();
         
         if($stmt->affected_rows > 0){
+            $activity_description = "Added new discount";
+            $activity_category = "Discount";
+            include("./activitylog.php");
+            
             echo json_encode(
                 array(
                     "message" => "Voucher successfully added!",
@@ -62,6 +66,10 @@ if(isset($_POST['action'])){
         $stmt->execute();
 
         if($stmt->affected_rows > 0){
+            $activity_description = "Updated the discount";
+            $activity_category = "Discount";
+            include("./activitylog.php");
+
             echo json_encode(
                 array(
                     "message" => "Voucher successfully updated!",
@@ -91,6 +99,10 @@ if(isset($_POST['action'])){
         $stmt->execute();
 
         if($stmt->affected_rows > 0){
+            $activity_description = "Set the discount " . ucfirst($status);
+            $activity_category = "Discount";
+            include("./activitylog.php");
+            
             echo json_encode(
                 array(
                     "message" => "Voucher successfully set to " . $status,

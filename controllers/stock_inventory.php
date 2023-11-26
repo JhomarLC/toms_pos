@@ -51,6 +51,10 @@ if(isset($_POST['action'])){
         $stmt->execute();
         
         if ($stmt->affected_rows > 0) {
+            $activity_description = "Updated $stock_category stock";
+            $activity_category = "Stock";
+            include("./activitylog.php");
+            
             echo json_encode(
                 array(
                     "message" => "Stock successfully updated",
@@ -106,6 +110,10 @@ if(isset($_POST['action'])){
             $success = $stmt->execute();
 
             if ($success) {
+                $activity_description = "Added $stock_category stock";
+                $activity_category = "Stock";
+                include("./activitylog.php");
+                
                 echo json_encode(
                     array(
                         "message" => "Stock successfully added.",

@@ -368,7 +368,6 @@ const UpdateExpense = () => {
 	});
 };
 
-const deleteExpenseButton = document.querySelector("#delete_expense_btn");
 const DeleteExpense = (expense_id) => {
 	Swal.fire({
 		text: "Are you sure you would like to continue?",
@@ -383,25 +382,29 @@ const DeleteExpense = (expense_id) => {
 		},
 	}).then((result) => {
 		if (result.isConfirmed) {
-			$.ajax({
-				url:
-					window.location.origin +
-					"/TOM_S1/controllers/expense_inventory.php", // Action
-				type: "POST", // Method
-				data: {
-					action: "delete_expense",
-					expense_id: expense_id,
-				},
-				dataType: "JSON",
-				beforeSend: function () {},
-				success: function (response) {
-					Alert(response.message, response.type);
-				},
-				complete: function () {},
-				error: function (jqXHR, textStatus, errorThrown) {
-					console.log(errorThrown);
-				},
-			});
+			DeleteNow(expense_id);
 		}
+	});
+};
+
+const DeleteNow = (expense_id) => {
+	$.ajax({
+		url:
+			window.location.origin +
+			"/TOM_S1/controllers/expense_inventory.php", // Action
+		type: "POST", // Method
+		data: {
+			action: "delete_expense",
+			expense_id: expense_id,
+		},
+		dataType: "JSON",
+		beforeSend: function () {},
+		success: function (response) {
+			Alert(response.message, response.type);
+		},
+		complete: function () {},
+		error: function (jqXHR, textStatus, errorThrown) {
+			console.log(errorThrown);
+		},
 	});
 };

@@ -124,7 +124,7 @@
                                         <!--begin::Add user-->
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#add_voucher_modal">
-                                            <i class="ki-duotone ki-plus fs-2"></i>Add Voucher
+                                            <i class="ki-duotone ki-plus fs-2"></i>Add Discount
                                         </button>
                                         <!--end::Add user-->
                                     </div>

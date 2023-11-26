@@ -110,6 +110,10 @@ if (isset($_POST['action'])) {
         $stmt->execute();
 
         if($stmt->affected_rows > 0){
+            $activity_description = "Refunded an order $order_id";
+            $activity_category = "Refund";
+            include("./activitylog.php");
+            
             echo json_encode(
                 array(
                     "message" => "Order successfully refunded.",

@@ -370,6 +370,6 @@ const Alert = (message, type) => {
 		confirmButtonText: "Ok, got it!",
 		customClass: { confirmButton: "btn btn-primary" },
 	}).then(() => {
-		location.reload(); // Reload the current page
+		location.reload();
 	});
 };

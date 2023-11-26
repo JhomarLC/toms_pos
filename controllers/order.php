@@ -51,7 +51,11 @@ if (isset($_POST['action'])) {
             }
 
             $connection->commit(); // Commit the transaction
-
+                
+            $activity_description = "Made an order $order_id";
+            $activity_category = "Order";
+            include("./activitylog.php");
+            
             echo json_encode(array("message" => "Order was successfully made.", "type" => "success"));
             exit;
         } else {

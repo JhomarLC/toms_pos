@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class=" modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Add New Category</h3>
+                <h3 class="modal-title">Add New Discount</h3>
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" id="close_add_modal">
                     <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
@@ -13,21 +13,21 @@
                 <form action="#" id="add_voucher_form" class="form" autocomplete="off" enctype="multipart/form-data">
                     <div class="fv-row mb-7">
                         <!--begin::Label-->
-                        <label class="required fw-semibold fs-6 mb-2">Voucher Code</label>
+                        <label class="required fw-semibold fs-6 mb-2">Discount Code</label>
                         <!--end::Label-->
                         <!--begin::Input-->
                         <input type="text" name="voucher_code" class="form-control form-control-solid mb-3 mb-lg-0"
-                            placeholder="Voucher Code" />
+                            placeholder="Discount Code" />
                         <!--end::Input-->
                     </div>
                     <!--end::Input group-->
                     <div class="fv-row mb-7">
                         <!--begin::Label-->
-                        <label class="required fw-semibold fs-6 mb-2">Voucher Percent</label>
+                        <label class="required fw-semibold fs-6 mb-2">Discount Percent</label>
                         <!--end::Label-->
                         <!--begin::Input-->
                         <input type="text" name="voucher_percent" class="form-control form-control-solid mb-3 mb-lg-0"
-                            placeholder="Voucher Percent" />
+                            placeholder="Discount Percent" />
                         <!--end::Input-->
                     </div>
                     <!--end::Input group-->
@@ -36,7 +36,7 @@
                         <!--begin::Actions-->
                         <button id="add_voucher_submit" type="submit" class="btn btn-primary">
                             <span class="indicator-label">
-                                Add Voucher
+                                Add Discount
                             </span>
                             <span class="indicator-progress">
                                 Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>

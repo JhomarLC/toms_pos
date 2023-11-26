@@ -20,7 +20,7 @@ if (isset($_POST['edit'])) {
             "type" => "success"
         );  
         
-        $activity_description = "Make changes in account";
+        $activity_description = "Updated account details: $full_name, $username, $email, Status: $status";
         include("../controllers/activitylog.php");
 
         header("Location: ../admin/");
@@ -129,14 +129,17 @@ if(isset($_POST['action'])){
         $stmt->execute();
         
         if($stmt->affected_rows > 0){
+            $activity_description = "Add new staff account";
+            $activity_category = "Staff Accounts";
+            include("./activitylog.php");
+            
             echo json_encode(
                 array(
                     "message" => "Account successfully added!",
                     "type" => "success"
                 )
             );
-            $activity_description = "Add new staff account";
-            include("./activitylog.php");
+            
             exit;
 
         } else {
@@ -176,16 +179,17 @@ if(isset($_POST['action'])){
         }
       
         if($stmt->affected_rows > 0){
+            $activity_description = "Update account details";
+            $activity_category = "Staff Accounts";
+            include("./activitylog.php");
+
             echo json_encode(
                 array(
                     "message" => "Account successfully updated!",
                     "type" => "success"
                 )
             );
-            $activity_description = "Edit staff account";
-            include("./activitylog.php");
             exit;
-
         } else {
             echo json_encode(
                 array(
