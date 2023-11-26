@@ -1,7 +1,8 @@
 <?php
     session_start();
     require("../../controllers/db_connection.php");
-
+    date_default_timezone_set('Asia/Manila');
+    
     if(isset($_COOKIE['account_signed_in'])){
         $user = json_decode($_COOKIE['account_signed_in'], true);
         if($user['role'] == "Staff"){
@@ -33,9 +34,16 @@
     <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Global Stylesheets Bundle-->
-    <script>
-    // Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }
-    </script>
+    <!--begin::Image placeholder-->
+    <style>
+    .image-input-placeholder {
+        background-image: url("assets/media/svg/files/blank-image.svg");
+    }
+
+    [data-bs-theme="dark"] .image-input-placeholder {
+        background-image: url("assets/media/svg/files/blank-image-dark.svg");
+    }
+    </style>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -43,8 +51,8 @@
 <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-fixed aside-secondary-disabled">
     <!--begin::Theme mode setup on page load-->
     <?php
-			require("../../other/message.php");
-		?>
+        require("../../other/message.php");
+    ?>
     <!--begin::Theme mode setup on page load-->
     <script>
     var defaultThemeMode = "light";
@@ -91,312 +99,159 @@
                 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
                     <!--begin::Container-->
                     <div class="container-xxl" id="kt_content_container">
-                        <!--begin::List Widget 5-->
-                        <div class="card mb-5 mb-xl-8">
-                            <!--begin::Header-->
-                            <div class="card-header align-items-center border-0 mt-4">
-                                <h3 class="card-title align-items-start flex-column">
-                                    <span class="fw-bold mb-2 text-dark">Activities</span>
-                                    <span class="text-muted fw-semibold fs-7">890,344 Sales</span>
-                                </h3>
-                                <div class="card-toolbar">
-                                    <!--begin::Menu-->
-                                    <button type="button"
-                                        class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
-                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                        <i class="ki-duotone ki-category fs-6">
+                        <!--begin::Card-->
+                        <div class="card">
+                            <!--begin::Card header-->
+                            <div class="card-header border-0 pt-6">
+                                <!--begin::Card title-->
+                                <div class="card-title">
+                                    <!--begin::Search-->
+                                    <div class="d-flex align-items-center position-relative my-1">
+                                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
-                                            <span class="path3"></span>
-                                            <span class="path4"></span>
                                         </i>
-                                    </button>
-                                    <!--begin::Menu 1-->
-                                    <div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true"
-                                        id="kt_menu_64b785078d292">
-                                        <!--begin::Header-->
-                                        <div class="px-7 py-5">
-                                            <div class="fs-5 text-dark fw-bold">
-                                                Filter Options
-                                            </div>
-                                        </div>
-                                        <!--end::Header-->
-                                        <!--begin::Menu separator-->
-                                        <div class="separator border-gray-200"></div>
-                                        <!--end::Menu separator-->
-                                        <!--begin::Form-->
-                                        <div class="px-7 py-5">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10">
-                                                <!--begin::Label-->
-                                                <label class="form-label fw-semibold">Status:</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <div>
-                                                    <select class="form-select form-select-solid" multiple="multiple"
-                                                        data-kt-select2="true" data-close-on-select="false"
-                                                        data-placeholder="Select option"
-                                                        data-dropdown-parent="#kt_menu_64b785078d292"
-                                                        data-allow-clear="true">
-                                                        <option></option>
-                                                        <option value="1">Approved</option>
-                                                        <option value="2">Pending</option>
-                                                        <option value="2">In Process</option>
-                                                        <option value="2">Rejected</option>
-                                                    </select>
-                                                </div>
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="mb-10">
-                                                <!--begin::Label-->
-                                                <label class="form-label fw-semibold">Member Type:</label>
-                                                <!--end::Label-->
-                                                <!--begin::Options-->
-                                                <div class="d-flex">
-                                                    <!--begin::Options-->
-                                                    <label
-                                                        class="form-check form-check-sm form-check-custom form-check-solid me-5">
-                                                        <input class="form-check-input" type="checkbox" value="1" />
-                                                        <span class="form-check-label">Author</span>
-                                                    </label>
-                                                    <!--end::Options-->
-                                                    <!--begin::Options-->
-                                                    <label
-                                                        class="form-check form-check-sm form-check-custom form-check-solid">
-                                                        <input class="form-check-input" type="checkbox" value="2"
-                                                            checked="checked" />
-                                                        <span class="form-check-label">Customer</span>
-                                                    </label>
-                                                    <!--end::Options-->
-                                                </div>
-                                                <!--end::Options-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="mb-10">
-                                                <!--begin::Label-->
-                                                <label class="form-label fw-semibold">Notifications:</label>
-                                                <!--end::Label-->
-                                                <!--begin::Switch-->
-                                                <div
-                                                    class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        name="notifications" checked="checked" />
-                                                    <label class="form-check-label">Enabled</label>
-                                                </div>
-                                                <!--end::Switch-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Actions-->
-                                            <div class="d-flex justify-content-end">
-                                                <button type="reset"
-                                                    class="btn btn-sm btn-light btn-active-light-primary me-2"
-                                                    data-kt-menu-dismiss="true">
-                                                    Reset
-                                                </button>
-                                                <button type="submit" class="btn btn-sm btn-primary"
-                                                    data-kt-menu-dismiss="true">
-                                                    Apply
-                                                </button>
-                                            </div>
-                                            <!--end::Actions-->
-                                        </div>
-                                        <!--end::Form-->
+                                        <input type="text" data-kt-user-table-filter="search_item"
+                                            class="form-control form-control-solid w-250px ps-13"
+                                            placeholder="Search Activity" />
                                     </div>
-                                    <!--end::Menu 1-->
-                                    <!--end::Menu-->
+                                    <!--end::Search-->
                                 </div>
+                                <!--begin::Card title-->
+                                <!--begin::Card toolbar-->
+                                <div class="card-toolbar">
+                                    <!--begin::Toolbar-->
+                                    <div class="d-flex gap-3 justify-content-end" data-kt-user-table-toolbar="base">
+                                        <!--begin::Flatpickr-->
+                                        <div class="input-group w-250px">
+                                            <select class="form-select form-select-solid" data-control="select2"
+                                                data-kt-select2="true" data-hide-search="true" data-placeholder="Role"
+                                                data-kt-ecommerce-order-filter="role">
+                                                <option value="All">All</option>
+                                                <option value="Staff">
+                                                    Staff
+                                                </option>
+                                                <option value="Admin">
+                                                    Admin
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <!--end::Flatpickr-->
+                                        <!--begin::Flatpickr-->
+                                        <!-- kt_ecommerce_sales_flatpickr -->
+                                        <div class="input-group w-300px">
+                                            <input class="form-control form-control-solid rounded rounded-end-0"
+                                                placeholder="Pick date range" id="kt_ecommerce_sales_flatpickr" />
+                                            <button class="btn btn-icon btn-light"
+                                                id="kt_ecommerce_sales_flatpickr_clear">
+                                                <i class="ki-duotone ki-cross fs-2">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </button>
+                                        </div>
+                                        <!--end::Flatpickr-->
+                                        <?php
+                                        //}
+                                        ?>
+                                        <!--end::Add user-->
+                                    </div>
+                                    <!--end::Toolbar-->
+                                    <!--begin::Modal - Adjust Balance-->
+                                    <div class="modal fade" id="kt_modal_export_users" tabindex="-1" aria-hidden="true">
+                                        <!--begin::Modal dialog-->
+                                        <div class="modal-dialog modal-dialog-centered mw-650px">
+                                            <!--begin::Modal content-->
+                                            <div class="modal-content">
+                                                <!--begin::Modal header-->
+                                                <div class="modal-header">
+                                                    <!--begin::Modal title-->
+                                                    <h2 class="fw-bold">Export Users</h2>
+                                                    <!--end::Modal title-->
+                                                    <!--begin::Close-->
+                                                    <div class="btn btn-icon btn-sm btn-active-icon-primary"
+                                                        data-kt-users-modal-action="close">
+                                                        <i class="ki-duotone ki-cross fs-1">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                    </div>
+                                                    <!--end::Close-->
+                                                </div>
+                                                <!--end::Modal header-->
+                                            </div>
+                                            <!--end::Modal content-->
+                                        </div>
+                                        <!--end::Modal dialog-->
+                                    </div>
+                                    <!--end::Modal - New Card-->
+                                    <!--begin::Modal - Add task-->
+                                    <!--end::Modal - Add task-->
+                                </div>
+                                <!--end::Card toolbar-->
                             </div>
-                            <!--end::Header-->
-                            <!--begin::Body-->
-                            <div class="card-body pt-5">
-                                <!--begin::Timeline-->
-                                <div class="timeline-label">
-                                    <?php
-								$query = "SELECT al.*, a.full_name FROM activitylog as al INNER JOIN accounts as a ON al.account_id = a.account_id ORDER BY activity_date DESC LIMIT 5";
+                            <?php include("templates/_addstock.php") ?>
+
+                            <!--end::Card header-->
+                            <!--begin::Card body-->
+                            <div class="card-body py-4">
+                                <!--begin::Table-->
+                                <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_items">
+                                    <thead>
+                                        <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                                            <th class="min-w-125px">Role</th>
+                                            <th class="min-w-125px">Account</th>
+                                            <th class="min-w-125px">Category</th>
+                                            <th class="min-w-125px">Description</th>
+                                            <th class="text-end min-w-100px">Date & Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-gray-600 fw-semibold">
+                                        <?php
+								$query = "SELECT al.*, a.full_name, a.role FROM activitylog as al INNER JOIN accounts as a ON al.account_id = a.account_id ORDER BY activity_date DESC";
                                 $stmt = $connection->prepare($query);
                                 $stmt->execute();
                                 $result = $stmt->get_result();
                     
                                 $num = 0;
                                 if($result->num_rows > 0){
-                                    while($log = $result->fetch_assoc()){
-                                        $formattedTime = date('H:i', strtotime($log['activity_date']));
-                                        ?>
-                                    <!--begin::Item-->
-                                    <div class="timeline-item">
-                                        <!--begin::Label-->
-                                        <div class="timeline-label fw-bold text-gray-800 fs-6">
-                                            <?= $formattedTime; ?>
-                                        </div>
-                                        <!--end::Label-->
-                                        <!--begin::Badge-->
-                                        <div class="timeline-badge">
-                                            <i class="fa fa-genderless text-warning fs-1"></i>
-                                        </div>
-                                        <!--end::Badge-->
-                                        <!--begin::Text-->
-                                        <div class="fw-mormal timeline-content ps-3">
-                                            <?= $log['full_name'] ?> <span
-                                                class="badge badge-primary"><?= $log['activity_description'] ?></span>
-                                        </div>
-                                        <!--end::Text-->
-                                    </div>
-                                    <!--end::Item-->
-                                    <?php 
-                                    }}
-                                    ?>
-                                    <!--begin::Item-->
-                                    <div class="timeline-item">
-                                        <!--begin::Label-->
-                                        <div class="timeline-label fw-bold text-gray-800 fs-6">
-                                            10:00
-                                        </div>
-                                        <!--end::Label-->
-                                        <!--begin::Badge-->
-                                        <div class="timeline-badge">
-                                            <i class="fa fa-genderless text-success fs-1"></i>
-                                        </div>
-                                        <!--end::Badge-->
-                                        <!--begin::Content-->
-                                        <div class="timeline-content d-flex">
-                                            <span class="fw-bold text-gray-800 ps-3">AEOL meeting</span>
-                                        </div>
-                                        <!--end::Content-->
-                                    </div>
-                                    <!--end::Item-->
-                                    <!--begin::Item-->
-                                    <div class="timeline-item">
-                                        <!--begin::Label-->
-                                        <div class="timeline-label fw-bold text-gray-800 fs-6">
-                                            14:37
-                                        </div>
-                                        <!--end::Label-->
-                                        <!--begin::Badge-->
-                                        <div class="timeline-badge">
-                                            <i class="fa fa-genderless text-danger fs-1"></i>
-                                        </div>
-                                        <!--end::Badge-->
-                                        <!--begin::Desc-->
-                                        <div class="timeline-content fw-bold text-gray-800 ps-3">
-                                            Make deposit
-                                            <a href="#" class="text-primary">USD 700</a>. to ESL
-                                        </div>
-                                        <!--end::Desc-->
-                                    </div>
-                                    <!--end::Item-->
-                                    <!--begin::Item-->
-                                    <div class="timeline-item">
-                                        <!--begin::Label-->
-                                        <div class="timeline-label fw-bold text-gray-800 fs-6">
-                                            16:50
-                                        </div>
-                                        <!--end::Label-->
-                                        <!--begin::Badge-->
-                                        <div class="timeline-badge">
-                                            <i class="fa fa-genderless text-primary fs-1"></i>
-                                        </div>
-                                        <!--end::Badge-->
-                                        <!--begin::Text-->
-                                        <div class="timeline-content fw-mormal text-muted ps-3">
-                                            Indulging in poorly driving and keep structure keep
-                                            great
-                                        </div>
-                                        <!--end::Text-->
-                                    </div>
-                                    <!--end::Item-->
-                                    <!--begin::Item-->
-                                    <div class="timeline-item">
-                                        <!--begin::Label-->
-                                        <div class="timeline-label fw-bold text-gray-800 fs-6">
-                                            21:03
-                                        </div>
-                                        <!--end::Label-->
-                                        <!--begin::Badge-->
-                                        <div class="timeline-badge">
-                                            <i class="fa fa-genderless text-danger fs-1"></i>
-                                        </div>
-                                        <!--end::Badge-->
-                                        <!--begin::Desc-->
-                                        <div class="timeline-content fw-semibold text-gray-800 ps-3">
-                                            New order placed
-                                            <a href="#" class="text-primary">#XF-2356</a>.
-                                        </div>
-                                        <!--end::Desc-->
-                                    </div>
-                                    <!--end::Item-->
-                                    <!--begin::Item-->
-                                    <div class="timeline-item">
-                                        <!--begin::Label-->
-                                        <div class="timeline-label fw-bold text-gray-800 fs-6">
-                                            16:50
-                                        </div>
-                                        <!--end::Label-->
-                                        <!--begin::Badge-->
-                                        <div class="timeline-badge">
-                                            <i class="fa fa-genderless text-primary fs-1"></i>
-                                        </div>
-                                        <!--end::Badge-->
-                                        <!--begin::Text-->
-                                        <div class="timeline-content fw-mormal text-muted ps-3">
-                                            Indulging in poorly driving and keep structure keep
-                                            great
-                                        </div>
-                                        <!--end::Text-->
-                                    </div>
-                                    <!--end::Item-->
-                                    <!--begin::Item-->
-                                    <div class="timeline-item">
-                                        <!--begin::Label-->
-                                        <div class="timeline-label fw-bold text-gray-800 fs-6">
-                                            21:03
-                                        </div>
-                                        <!--end::Label-->
-                                        <!--begin::Badge-->
-                                        <div class="timeline-badge">
-                                            <i class="fa fa-genderless text-danger fs-1"></i>
-                                        </div>
-                                        <!--end::Badge-->
-                                        <!--begin::Desc-->
-                                        <div class="timeline-content fw-semibold text-gray-800 ps-3">
-                                            New order placed
-                                            <a href="#" class="text-primary">#XF-2356</a>.
-                                        </div>
-                                        <!--end::Desc-->
-                                    </div>
-                                    <!--end::Item-->
-                                    <!--begin::Item-->
-                                    <div class="timeline-item">
-                                        <!--begin::Label-->
-                                        <div class="timeline-label fw-bold text-gray-800 fs-6">
-                                            10:30
-                                        </div>
-                                        <!--end::Label-->
-                                        <!--begin::Badge-->
-                                        <div class="timeline-badge">
-                                            <i class="fa fa-genderless text-success fs-1"></i>
-                                        </div>
-                                        <!--end::Badge-->
-                                        <!--begin::Text-->
-                                        <div class="timeline-content fw-mormal text-muted ps-3">
-                                            Finance KPI Mobile app launch preparion meeting
-                                        </div>
-                                        <!--end::Text-->
-                                    </div>
-                                    <!--end::Item-->
-                                </div>
-                                <!--end::Timeline-->
+                                    while($activity = $result->fetch_assoc()){
+                                        $activityDate = date("l j F, Y h:i A", strtotime($activity['activity_date']));
+                                        $activityData =  date("Y-m-d", strtotime($activity['activity_date']));?>
+                                        <tr>
+                                            <td>
+                                                <?php if($activity['role'] == 'Admin') {?>
+                                                <span class="fw-bold badge badge-light-danger fw-bold">
+                                                    <?= $activity['role'] ?></span>
+                                                <?php } elseif ($activity['role'] == 'Staff') {?>
+                                                <span class="fw-bold badge badge-light-success fw-bold">
+                                                    <?= $activity['role'] ?></span>
+                                                <?php }?>
+
+                                            </td>
+                                            <td><?= $activity['full_name'] ?></td>
+                                            <td><?= $activity['activity_category'] ?></td>
+                                            <td><?= $activity['activity_description'] ?></td>
+                                            <td class="text-end" data-order="<?= $activityData ?>">
+                                                <span
+                                                    class="fw-bold badge badge-light-success fw-bold"><?= $activityDate ?></span>
+                                            </td>
+                                        </tr>
+                                        <?php } 
+                                        }?>
+                                    </tbody>
+                                </table>
+                                <!--end::Table-->
                             </div>
-                            <!--end: Card Body-->
+                            <!--end::Card body-->
                         </div>
-                        <!--end: List Widget 5-->
+                        <!--end::Card-->
+                        <!-- ################################### -->
                     </div>
                     <!--end::Container-->
                 </div>
                 <!--end::Content-->
-                <?php include("templates/_edituser.php") ?>
+                <?php include("templates/_editstock.php") ?>
                 <!--begin::Footer-->
                 <div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
                     <!--begin::Container-->
@@ -428,7 +283,6 @@
         </i>
     </div>
     <!--end::Scrolltop-->
-
     <!--begin::Javascript-->
     <script>
     var hostUrl = "assets/";
@@ -436,16 +290,17 @@
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="assets/plugins/global/plugins.bundle.js"></script>
     <script src="assets/js/scripts.bundle.js"></script>
-    <script src="assets/js/custom/scripts/staffs.js"></script>
+    <script src="assets/js/custom/scripts/inventory_stock.js"></script>
+    <script src="assets/js/custom/scripts/image-input.js"></script>
     <!--end::Global Javascript Bundle-->
     <!--begin::Vendors Javascript(used for this page only)-->
     <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
-    <script src="assets/plugins/custom/vis-timeline/vis-timeline.bundle.js"></script>
+    <!-- <script src="assets/plugins/custom/vis-timeline/vis-timeline.bundle.js"></script> -->
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="assets/js/custom/apps/user-management/users/list/table.js"></script>
-    <script src="assets/js/custom/apps/user-management/users/list/export-users.js"></script>
-    <script src="assets/js/custom/apps/user-management/users/list/add.js"></script>
+    <script src="assets/js/custom/apps/user-management/users/list/table_history.js"></script>
+    <!-- <script src="assets/js/custom/apps/user-management/users/list/export-users.js"></script> -->
+    <!-- <script src="assets/js/custom/apps/user-management/users/list/add.js"></script> -->
     <script src="assets/js/custom/validation.js"></script>
     <script src="assets/js/custom/authentication/sign-in/general.js"></script>
     <script src="assets/js/widgets.bundle.js"></script>

@@ -1,15 +1,14 @@
 <!--begin::Logo-->
 <div class="aside-logo flex-column-auto pt-10 pt-lg-20" id="kt_aside_logo">
-    <a href="admin/">
+    <a href="../../../">
         <img alt="Logo" src="assets/media/logos/logo.png" class="h-100px" />
     </a>
 </div>
-<!--end::Logo-->
 <!--begin::Nav-->
 <div class="aside-menu flex-column-fluid pt-0 pb-7 py-lg-10" id="kt_aside_menu">
     <!--begin::Aside menu-->
     <div id="kt_aside_menu_wrapper" class="w-100 hover-scroll-y scroll-ms d-flex" data-kt-scroll="true"
-        data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer"
+        data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer"
         data-kt-scroll-wrappers="#kt_aside, #kt_aside_menu" data-kt-scroll-offset="0">
         <div id="kt_aside_menu"
             class="menu menu-column menu-title-gray-600 menu-state-primary menu-state-icon-primary menu-state-bullet-primary menu-icon-gray-400 menu-arrow-gray-400 fw-semibold fs-6 my-auto"
@@ -136,7 +135,7 @@
                 <!--begin:Menu sub-->
                 <div class="menu-sub menu-sub-dropdown px-2 py-4 w-250px mh-75 overflow-auto">
                     <!--begin:Menu item-->
-                    <div class="menu-item ">
+                    <div class="menu-item">
                         <!--begin:Menu content-->
                         <div class="menu-content">
                             <span class="menu-section fs-5 fw-bolder ps-1 py-1">Inventory</span>
