@@ -303,9 +303,6 @@ if(isset($_POST['action'])){
                         "type" => "success"
                     )
                 );
-                $activity_description = "Edit category menu";
-                include("./activitylog.php");
-                exit;
     
             } else {
                 echo json_encode(

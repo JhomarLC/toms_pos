@@ -138,6 +138,39 @@
                                         </div>
                                         <!--end::Flatpickr-->
                                         <!--begin::Flatpickr-->
+                                        <div class="input-group w-250px">
+                                            <select class="form-select form-select-solid" data-control="select2"
+                                                data-kt-select2="true" data-hide-search="true"
+                                                data-placeholder="Category" data-kt-ecommerce-order-filter="category">
+                                                <option value="All">All</option>
+                                                <option value="Order">
+                                                    Orders
+                                                </option>
+                                                <option value="Refund">
+                                                    Refunds
+                                                </option>
+                                                <option value="Stock">
+                                                    Stocks
+                                                </option>
+                                                <option value="Expense">
+                                                    Expenses
+                                                </option>
+                                                <option value="Menu Item">
+                                                    Menu Items
+                                                </option>
+                                                <option value="Menu Category">
+                                                    Menu Categories
+                                                </option>
+                                                <option value="Discount">
+                                                    Discounts
+                                                </option>
+                                                <option value="Staff Accounts">
+                                                    Staff Accounts
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <!--end::Flatpickr-->
+                                        <!--begin::Flatpickr-->
                                         <!-- kt_ecommerce_sales_flatpickr -->
                                         <div class="input-group w-300px">
                                             <input class="form-control form-control-solid rounded rounded-end-0"
