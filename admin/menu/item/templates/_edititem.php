@@ -175,7 +175,7 @@
                         <!--begin::Actions-->
                         <button id="edit_item_submit" type="submit" class="btn btn-primary">
                             <span class="indicator-label">
-                                Update Category
+                                Update Item
                             </span>
                             <span class="indicator-progress">
                                 Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>

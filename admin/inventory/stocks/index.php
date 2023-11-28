@@ -127,8 +127,10 @@
                                             <select class="form-select form-select-solid" data-control="select2"
                                                 data-kt-select2="true" data-hide-search="true"
                                                 data-placeholder="Category" data-kt-ecommerce-order-filter="category">
-                                                <option></option>
-                                                <option value="Chicken" selected>
+                                                <option value="All" selected>
+                                                    All
+                                                </option>
+                                                <option value="Chicken">
                                                     Chicken
                                                 </option>
                                                 <option value="Isaw">
@@ -151,17 +153,6 @@
                                             </button>
                                         </div>
                                         <!--end::Flatpickr-->
-                                        <?php
-                                        // $checkQuery = "SELECT COUNT(*) FROM stockinventory WHERE stock_date = CURDATE()";
-                                        // $checkResult = $connection->query($checkQuery);
-
-                                        // if ($checkResult->fetch_row()[0] > 0) {
-                                        ?>
-                                        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#add_stock_modal" disabled>
-                                            <i class="ki-duotone ki-plus fs-2"></i>Add Stock Today
-                                        </button> -->
-                                        <?php // } else { ?>
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#add_stock_modal">
                                             <i class="ki-duotone ki-plus fs-2"></i>Add Stock Today

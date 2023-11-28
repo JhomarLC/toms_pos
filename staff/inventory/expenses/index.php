@@ -122,19 +122,6 @@
                                 <div class="card-toolbar">
                                     <!--begin::Toolbar-->
                                     <div class="d-flex gap-3 justify-content-end" data-kt-user-table-toolbar="base">
-                                        <!--begin::Flatpickr-->
-                                        <div class="input-group w-250px">
-                                            <input class="form-control form-control-solid rounded rounded-end-0"
-                                                placeholder="Pick date range" id="kt_ecommerce_sales_flatpickr" />
-                                            <button class="btn btn-icon btn-light"
-                                                id="kt_ecommerce_sales_flatpickr_clear">
-                                                <i class="ki-duotone ki-cross fs-2">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                            </button>
-                                        </div>
-                                        <!--end::Flatpickr-->
                                         <!--begin::Add user-->
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#add_expense_modal">

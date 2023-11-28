@@ -43,7 +43,7 @@ var KTUsersList1 = (function () {
 		);
 		$(filterStatus).on("change", (e) => {
 			let value = e.target.value;
-			if (value === "all") {
+			if (value === "All") {
 				value = "";
 			}
 			datatable.column(0).search(value).draw();
@@ -233,10 +233,6 @@ var KTUsersList1 = (function () {
 			// const filterString = "Chicken";
 			// const filterValue = "\\b" + filterString + "\\b";
 			// datatable.search(filterValue, true, false).draw();
-			const filterStatus = document.querySelector(
-				'[data-kt-ecommerce-order-filter="category"]'
-			);
-			datatable.column(0).search(filterStatus.value).draw();
 			// Trigger the filter action
 			// handleFilterDatatable();
 			handleCategoryFilter();
