@@ -109,12 +109,14 @@
                                                     FROM orders
                                                     WHERE MONTH(order_date) = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH)
                                                       AND YEAR(order_date) = YEAR(CURRENT_DATE())
+                                                      AND status != 'refunded'
                                                 ) AS last_month,
                                                 (
                                                     SELECT COUNT(*) AS orders
                                                     FROM orders
                                                     WHERE MONTH(order_date) = MONTH(CURRENT_DATE())
                                                       AND YEAR(order_date) = YEAR(CURRENT_DATE())
+                                                      AND status != 'refunded'
                                                 ) AS this_month;";
                                                 $stmt = $connection->prepare($query);
                                                 $stmt->execute();
@@ -318,89 +320,230 @@
                             <!--end::Col-->
                         </div>
                         <!--end::Row-->
-                        <!--begin::Col-->
-                        <?php  
-                                    $query = "SELECT
-                                    COALESCE(SUM(daily_sales), 0) AS total_sales_last_7_days
-                                FROM
-                                    (
-                                        SELECT
-                                            DATE_FORMAT(calendar_date, '%a') AS shorten_day,
-                                            DAYOFWEEK(calendar_date) AS day_of_week,
-                                            DAYOFWEEK(CURDATE()) as day_today,
-                                            calendar_date AS sale_day,
-                                            COALESCE(SUM(CASE WHEN status != 'refunded' THEN total ELSE 0 END), 0) AS daily_sales
-                                        FROM
-                                            (
-                                                SELECT CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY as calendar_date
-                                                FROM (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) a
-                                                CROSS JOIN (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) b
-                                                CROSS JOIN (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) c
-                                            ) calendar
-                                            LEFT JOIN orders ON DATE(orders.order_date) = calendar.calendar_date AND orders.status != 'refunded'
-                                        WHERE calendar_date >= CURDATE() - INTERVAL 6 DAY
-                                        GROUP BY sale_day
-                                        HAVING day_of_week >= 1 and day_of_week <= day_today
-                                    ) daily_sales_summary;
-                                ";
-                                $stmt = $connection->prepare($query);
-                                $stmt->execute();
-                                $result = $stmt->get_result();
-                                $wSales = $result->fetch_assoc();
-                                ?>
-                        <div class="col-lg-12 col-xl-12 col-xxl-6 mb-5 mb-xl-0">
-                            <!--begin::Chart widget 3-->
-                            <div class="card card-flush overflow-hidden h-md-100">
-                                <!--begin::Header-->
-                                <div class="card-header py-5">
-                                    <!--begin::Title-->
-                                    <h3 class="card-title align-items-start flex-column">
-                                        <span class="card-label fw-bold text-dark" id="sales_title"></span>
-                                    </h3>
-                                    <!--begin::Flatpickr-->
-                                    <div class="input-group w-250px">
-                                        <select class="form-select form-select-solid" data-control="select2"
-                                            data-kt-select2="true" data-hide-search="true" data-placeholder="Category"
-                                            id="sales_filter_select">
-                                            <option></option>
-                                            <option value="Weekly" selected>
-                                                Weekly
-                                            </option>
-                                            <option value="Monthly">
-                                                Monthly
-                                            </option>
-                                        </select>
-                                        <!--end::Select2-->
+                        <div class="row">
+                            <!--begin::Col-->
+                            <div class="col-lg-12 col-xl-12 col-xxl-6 mb-5 mb-xl-0 mb-10">
+                                <!--begin::Chart widget 3-->
+                                <div class="card card-flush overflow-hidden h-md-100">
+                                    <!--begin::Header-->
+                                    <div class="card-header py-5">
+                                        <!--begin::Title-->
+                                        <h3 class="card-title align-items-start flex-column">
+                                            <span class="card-label fw-bold text-dark" id="sales_title"></span>
+                                        </h3>
+                                        <!--begin::Flatpickr-->
+                                        <div class="input-group w-150px">
+                                            <select class="form-select form-select-solid" data-control="select2"
+                                                data-kt-select2="true" data-hide-search="true"
+                                                data-placeholder="Category" id="sales_filter_select">
+                                                <option></option>
+                                                <option value="Weekly" selected>
+                                                    Weekly
+                                                </option>
+                                                <option value="Monthly">
+                                                    Monthly
+                                                </option>
+                                            </select>
+                                            <!--end::Select2-->
+                                        </div>
+                                        <!--end::Flatpickr-->
                                     </div>
-                                    <!--end::Flatpickr-->
-                                </div>
-                                <!--end::Header-->
-                                <!--begin::Card body-->
-                                <div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
-                                    <!--begin::Statistics-->
-                                    <div class="px-9 mb-5">
+                                    <!--end::Header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
                                         <!--begin::Statistics-->
-                                        <div class="d-flex mb-2">
-                                            <span class="fs-4 fw-semibold text-gray-400 me-1">₱</span>
-                                            <span id="total_sales_chart"
-                                                class="fs-2hx fw-bold text-success me-2 lh-1 ls-n2"></span>
+                                        <div class="px-9 mb-5">
+                                            <!--begin::Statistics-->
+                                            <div class="d-flex mb-2">
+                                                <span class="fs-4 fw-semibold text-gray-400 me-1">₱</span>
+                                                <span id="total_sales_chart"
+                                                    class="fs-2hx fw-bold text-success me-2 lh-1 ls-n2"></span>
+                                            </div>
+                                            <!--end::Statistics-->
+                                            <!--begin::Description-->
+                                            <!-- <span class="fs-6 fw-semibold text-gray-400">Another ₱48,346 to Goal</span> -->
+                                            <!--end::Description-->
                                         </div>
                                         <!--end::Statistics-->
-                                        <!--begin::Description-->
-                                        <!-- <span class="fs-6 fw-semibold text-gray-400">Another ₱48,346 to Goal</span> -->
-                                        <!--end::Description-->
+                                        <!--begin::Chart-->
+                                        <div id="kt_charts_widget_3" class="min-h-auto ps-4 pe-6" style="height: 300px">
+                                        </div>
+                                        <!--end::Chart-->
                                     </div>
-                                    <!--end::Statistics-->
-                                    <!--begin::Chart-->
-                                    <div id="kt_charts_widget_3" class="min-h-auto ps-4 pe-6" style="height: 300px">
-                                    </div>
-                                    <!--end::Chart-->
+                                    <!--end::Card body-->
                                 </div>
-                                <!--end::Card body-->
+                                <!--end::Chart widget 3-->
                             </div>
-                            <!--end::Chart widget 3-->
+                            <!--end::Col-->
+                            <!--begin::Col-->
+                            <div class="col-lg-12 col-xl-12 col-xxl-6 mb-5 mb-xl-0 mb-10">
+                                <!--begin::Chart widget 3-->
+                                <div class="card card-flush overflow-hidden h-md-100">
+                                    <!--begin::Header-->
+                                    <div class="card-header py-5">
+                                        <!--begin::Title-->
+                                        <h3 class="card-title align-items-start flex-column">
+                                            <span class="badge badge-primary" id="category_text"></span>
+                                            <span class="card-label fw-bold text-dark" id="sales_title_4"></span>
+                                        </h3>
+                                        <div class="d-flex gap-3">
+                                            <!--begin::Flatpickr-->
+                                            <div class="input-group w-150px">
+                                                <select class="form-select form-select-solid" data-control="select2"
+                                                    data-kt-select2="true" data-hide-search="true"
+                                                    data-placeholder="Category" id="stockcategory_filter_select">
+                                                    <option></option>
+                                                    <option value="Chicken" selected>
+                                                        Chicken
+                                                    </option>
+                                                    <option value="Isaw">
+                                                        Isaw
+                                                    </option>
+                                                    <option value="Others">
+                                                        Others
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <!--end::Flatpickr-->
+                                            <!--begin::Flatpickr-->
+                                            <div class="input-group w-150px">
+                                                <select class="form-select form-select-solid" data-control="select2"
+                                                    data-kt-select2="true" data-hide-search="true"
+                                                    data-placeholder="Category" id="stock_filter_select">
+                                                    <option></option>
+                                                    <option value="Weekly" selected>
+                                                        Weekly
+                                                    </option>
+                                                    <option value="Monthly">
+                                                        Monthly
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <!--end::Flatpickr-->
+
+                                        </div>
+                                    </div>
+                                    <!--end::Header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
+                                        <!--begin::Statistics-->
+                                        <div class="px-9 mb-5">
+                                            <!--begin::Statistics-->
+                                            <div class="d-flex mb-2">
+                                                <span class="fs-4 fw-semibold text-gray-400 me-1">₱</span>
+                                                <span id="total_sales_chart_4"
+                                                    class="fs-2hx fw-bold text-primary me-2 lh-1 ls-n2"></span>
+                                            </div>
+                                            <!--end::Statistics-->
+                                            <!--begin::Description-->
+                                            <!-- <span class="fs-6 fw-semibold text-gray-400">Another ₱48,346 to Goal</span> -->
+                                            <!--end::Description-->
+                                        </div>
+                                        <!--end::Statistics-->
+                                        <!--begin::Chart-->
+                                        <div id="kt_charts_widget_4" class="min-h-auto ps-4 pe-6" style="height: 300px">
+                                        </div>
+                                        <!--end::Chart-->
+                                    </div>
+                                    <!--end::Card body-->
+                                </div>
+                                <!--end::Chart widget 3-->
+                            </div>
+                            <!--end::Col-->
+
+                            <!--begin::Col-->
+                            <div class="col-lg-12 col-xl-12 col-xxl-6 mb-5 mb-xl-0 mt-10">
+                                <!--begin::Chart widget 3-->
+                                <div class="card card-flush overflow-hidden h-md-100">
+                                    <!--begin::Header-->
+                                    <div class="card-header py-5">
+                                        <!--begin::Title-->
+                                        <h3 class="card-title align-items-start flex-column">
+                                            <span class="badge badge-light-warning" id="orders_text"></span>
+                                            <span class="card-label fw-bold text-dark" id="sales_title_5"></span>
+                                        </h3>
+                                        <div class="d-flex gap-3">
+                                            <!--begin::Flatpickr-->
+                                            <div class="input-group w-200px">
+                                                <select class="form-select form-select-solid" data-control="select2"
+                                                    data-kt-select2="true" data-hide-search="true"
+                                                    data-placeholder="Category" id="orderscategory_filter_select">
+                                                    <?php 
+                                                        $query = "SELECT * FROM category";
+                                                        $stmt = $connection->prepare($query);
+                                                        $stmt->execute();
+                                                        $result = $stmt->get_result();
+
+                                                        if($result->num_rows > 0){
+                                                            while($category = $result->fetch_assoc()){
+                                                                if(isset($item) && $item['category_id'] == $category['category_id']){
+                                                                ?>
+                                                    <option value="<?= $category['category_id'] ?>" selected>
+                                                        <?= $category['category_name'] ?></option>
+                                                    <?php
+                                                        } else {
+                                                        ?>
+                                                    <option value="<?= $category['category_id'] ?>">
+                                                        <?= $category['category_name'] ?>
+                                                    </option>
+                                                    <?php
+                                                                }
+                                                            }
+                                                        } else {
+                                                            ?>
+                                                    <option value="" disabled>No Category to Show</option>
+                                                    <?php
+                                                        }
+                                                        $stmt->close();
+                                                        ?>
+                                                </select>
+                                            </div>
+                                            <!--end::Flatpickr-->
+                                            <!--begin::Flatpickr-->
+                                            <div class="input-group w-150px">
+                                                <select class="form-select form-select-solid" data-control="select2"
+                                                    data-kt-select2="true" data-hide-search="true"
+                                                    data-placeholder="Category" id="orders_filter_select">
+                                                    <option></option>
+                                                    <option value="Weekly" selected>
+                                                        Weekly
+                                                    </option>
+                                                    <option value="Monthly">
+                                                        Monthly
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <!--end::Flatpickr-->
+
+                                        </div>
+                                    </div>
+                                    <!--end::Header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
+                                        <!--begin::Statistics-->
+                                        <div class="px-9 mb-5">
+                                            <!--begin::Statistics-->
+                                            <div class="d-flex mb-2">
+                                                <span id="total_sales_chart_5"
+                                                    class="fs-2hx fw-bold text-warning me-2 lh-1 ls-n2"></span>
+                                            </div>
+                                            <!--end::Statistics-->
+                                            <!--begin::Description-->
+                                            <!-- <span class="fs-6 fw-semibold text-gray-400">Another ₱48,346 to Goal</span> -->
+                                            <!--end::Description-->
+                                        </div>
+                                        <!--end::Statistics-->
+                                        <!--begin::Chart-->
+                                        <div id="kt_charts_widget_5" class="min-h-auto ps-4 pe-6" style="height: 300px">
+                                        </div>
+                                        <!--end::Chart-->
+                                    </div>
+                                    <!--end::Card body-->
+                                </div>
+                                <!--end::Chart widget 3-->
+                            </div>
+                            <!--end::Col-->
                         </div>
-                        <!--end::Col-->
                     </div>
                     <!--end::Container-->
                 </div>
@@ -451,6 +594,7 @@
     <!-- <script src="assets/js/widgets.bundle.js"></script> -->
     <script src="assets/js/custom/widgets.js"></script>
     <script src="assets/js/custom/scripts/dashboard/widgets.js"></script>
+    <!-- <script src="assets/js/custom/scripts/dashboard/widgets_4.js"></script> -->
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
 </body>

@@ -377,14 +377,14 @@
                                                     <label
                                                         class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex align-items-center"
                                                         for="kt_radio_buttons_2_option_2">
-                                                        <i class="ki-duotone ki-arrow-down fs-2x me-4"><span
+                                                        <i class="ki-duotone ki-arrow-up fs-2x me-4"><span
                                                                 class="path1"></span><span class="path2"></span></i>
 
                                                         <span class="d-block fw-semibold text-start">
                                                             <span
                                                                 class="text-gray-900 fw-bold d-block fs-3">TAKE-OUT</span>
                                                             <span class="text-muted fw-semibold fs-6">
-                                                                This order is dine-in
+                                                                This order is take-out
                                                             </span>
                                                         </span>
                                                     </label>

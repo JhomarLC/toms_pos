@@ -56,7 +56,7 @@ var KTUsersList1 = (function () {
 		const element = document.querySelector("#kt_ecommerce_sales_flatpickr");
 		flatpickr = $(element).flatpickr({
 			altInput: true,
-			altFormat: "l j F, Y",
+			altFormat: "Y/m/d",
 			dateFormat: "Y-m-d",
 			mode: "range",
 			onChange: function (selectedDates, dateStr, instance) {
