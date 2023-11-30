@@ -119,6 +119,7 @@
                                 <!--begin::Card title-->
                                 <!--begin::Card toolbar-->
                                 <div class="card-toolbar">
+                                    <?php include("./templates/_filteritems.php") ?>
                                     <!--begin::Toolbar-->
                                     <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                         <!--begin::Add user-->
