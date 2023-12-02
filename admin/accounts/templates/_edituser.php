@@ -33,6 +33,7 @@
                         <label class="required fw-semibold fs-6 mb-2">Username</label>
                         <!--end::Label-->
                         <!--begin::Input-->
+                        <input type="text" name="current_username" id="current_username" hidden>
                         <input type="text" name="username" id="username"
                             class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Username" />
                         <!--end::Input-->

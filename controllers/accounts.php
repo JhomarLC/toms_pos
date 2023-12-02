@@ -104,6 +104,7 @@ if(isset($_POST['action'])){
                         "staff_id" => $account['account_id'],
                         "full_name" => $account['full_name'],
                         "username" => $account['username'],
+                        "current_username" => $account['username'],
                         "email" => $account['email'],
                         "status" => $account['status'],
                     )

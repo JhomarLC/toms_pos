@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 								username:
 									form.querySelector('[name="username"]')
 										.value,
+								current_username: "",
 							};
 						},
 						message: "The username is not available",
@@ -118,6 +119,23 @@ document.addEventListener("DOMContentLoaded", function (e) {
 						message: "Username must be 4-20 characters only",
 						min: 4,
 						max: 20,
+					},
+					remote: {
+						url:
+							window.location.origin +
+							"/TOM_S1/controllers/validusername.php",
+						data: function () {
+							return {
+								username:
+									form1.querySelector('[name="username"]')
+										.value,
+								current_username: form1.querySelector(
+									'[name="current_username"]'
+								).value,
+							};
+						},
+						message: "The username is not available",
+						method: "POST",
 					},
 				},
 			},
@@ -484,6 +502,7 @@ const GetEditValue = (staff_id) => {
 				$("#staff_id").val(response.staff_id);
 				$("#full_name").val(response.full_name);
 				$("#username").val(response.username);
+				$("#current_username").val(response.current_username);
 				$("#email").val(response.email);
 				$("input[name=status][value=" + response.status + "]").prop(
 					"checked",
