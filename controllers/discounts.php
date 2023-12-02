@@ -145,7 +145,7 @@ if(isset($_POST['action'])){
         exit;
     }
     if ($_POST['action'] == "get_items") {
-        $query = "SELECT item_name, price FROM items WHERE category_id = 32";
+        $query = "SELECT item_name, price FROM items";
         $stmt = $connection->prepare($query);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -154,9 +154,10 @@ if(isset($_POST['action'])){
     
         if ($result->num_rows > 0) {
             while ($item = $result->fetch_assoc()) {
+                $string = (strlen($item['item_name']) > 5) ? substr($item['item_name'],0,10).'...' : $item['item_name'];
                 $items[] = array(
                     "price" => $item['price'],
-                    "item_name" => $item['item_name'],
+                    "item_name" => $string,
                 );
             }
         }
