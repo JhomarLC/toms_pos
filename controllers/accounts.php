@@ -43,7 +43,7 @@ if (isset($_POST['add'])) {
     $email = mysqli_real_escape_string($connection, $_POST['email']);
     $password = mysqli_real_escape_string($connection, $_POST['password']);
     $cpassword = mysqli_real_escape_string($connection, $_POST['cpassword']);
-
+   
     if($password !== $cpassword){
         $correctValues = array(
             "full_name" => $full_name, 
@@ -120,7 +120,19 @@ if(isset($_POST['action'])){
         $email = mysqli_real_escape_string($connection, $_POST['email']);
         $password = mysqli_real_escape_string($connection, $_POST['password']);
         $cpassword = mysqli_real_escape_string($connection, $_POST['cpassword']);
-      
+        $query = "SELECT * FROM accounts WHERE username = ?";
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+    
+        if($stmt->num_rows() > 0){
+            $_SESSION['alert'] = array(
+                "message" => "Username already exist!",
+                "type" => "error"
+            );  
+            exit;
+        } 
+        $stmt->close();
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
         $query = "INSERT INTO accounts (username, password, email, full_name) VALUES (?, ?, ?, ?)";
@@ -141,7 +153,6 @@ if(isset($_POST['action'])){
             );
             
             exit;
-
         } else {
             echo json_encode(
                 array(

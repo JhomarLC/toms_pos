@@ -168,9 +168,9 @@
                                             <!--begin::Tap pane-->
                                             <div class="tab-pane fade show active" id="<?= $category['category_id'] ?>">
                                                 <!--begin::Wrapper-->
-                                                <div class="d-flex flex-wrap d-grid gap-3 gap-xxl-5 scroll pe-5"
+                                                <div class="d-flex flex-wrap align-content-start d-grid gap-3 gap-xxl-5 scroll pe-5"
                                                     data-kt-scroll="true"
-                                                    data-kt-scroll-height="{default: '100px', lg: '400px'}">
+                                                    data-kt-scroll-height="{default: '100px', lg: '700px'}">
                                                     <?php
                                                     $query_i = "SELECT * FROM items WHERE category_id = ?";
                                                     $stmt_i = $connection->prepare($query_i);
@@ -250,9 +250,9 @@
                                                 <!--begin::Tap pane-->
                                                 <div class="tab-pane fade show" id="<?= $category['category_id'] ?>">
                                                     <!--begin::Wrapper-->
-                                                    <div class="d-flex flex-wrap d-grid gap-3 gap-xxl-5 scroll pe-5"
+                                                    <div class="d-flex flex-wrap align-content-start d-grid gap-3 gap-xxl-5 scroll pe-5"
                                                         data-kt-scroll="true"
-                                                        data-kt-scroll-height="{default: '100px', lg: '400px'}">
+                                                        data-kt-scroll-height="{default: '100px', lg: '700px'}">
                                                         <?php
                                                     $query_i = "SELECT * FROM items WHERE category_id = ?";
                                                     $stmt_i = $connection->prepare($query_i);
@@ -264,7 +264,7 @@
                                                         while($item = $result_i->fetch_assoc()){
                                                     ?>
                                                         <!--begin::Ribbon wrapper 1-->
-                                                        <div class="overflow-hidden position-relative mw-100 card-rounded  cursor-pointer"
+                                                        <div class="overflow-hidden position-relative mw-100 card-rounded cursor-pointer"
                                                             onclick="createDialer(this, <?= $item['item_id'] ?>, '<?= $item['item_name'] ?>', <?= $item['price'] ?>, 'images/uploads/<?= $item['image'] ?>')">
                                                             <!--begin::Ribbon-->
                                                             <div class="ribbon ribbon-triangle ribbon-top-end border-primary"

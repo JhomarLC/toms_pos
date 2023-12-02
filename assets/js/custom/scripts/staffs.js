@@ -25,6 +25,20 @@ document.addEventListener("DOMContentLoaded", function (e) {
 						min: 4,
 						max: 20,
 					},
+					remote: {
+						url:
+							window.location.origin +
+							"/TOM_S1/controllers/validusername.php",
+						data: function () {
+							return {
+								username:
+									form.querySelector('[name="username"]')
+										.value,
+							};
+						},
+						message: "The username is not available",
+						method: "POST",
+					},
 				},
 			},
 			email: {
