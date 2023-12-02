@@ -1,12 +1,9 @@
 <div class="modal fade" tabindex="-1" id="add_expense_modal">
     <div class="modal-dialog modal-dialog-centered">
-        <div class=" modal-content">
+        <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">Add new Expense</h3>
                 <!--begin::Close-->
-                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal">
-
-                </div>
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" id="close_expense_modal">
                     <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                 </div>
