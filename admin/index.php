@@ -343,6 +343,9 @@
                                                 <option value="Monthly">
                                                     Monthly
                                                 </option>
+                                                <option value="Yearly">
+                                                    Yearly
+                                                </option>
                                             </select>
                                             <!--end::Select2-->
                                         </div>
@@ -416,6 +419,9 @@
                                                     </option>
                                                     <option value="Monthly">
                                                         Monthly
+                                                    </option>
+                                                    <option value="Yearly">
+                                                        Yearly
                                                     </option>
                                                 </select>
                                             </div>
@@ -510,6 +516,9 @@
                                                     </option>
                                                     <option value="Monthly">
                                                         Monthly
+                                                    </option>
+                                                    <option value="Yearly">
+                                                        Yearly
                                                     </option>
                                                 </select>
                                             </div>

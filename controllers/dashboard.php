@@ -353,5 +353,145 @@ if (isset($_POST['action'])){
             exit;
         }
     }
+    if($_POST['action'] == "get_yearly_sales") {
+        $query = "SELECT
+        DATE_FORMAT(calendar_date, '%b') AS month,
+        COALESCE(SUM(CASE WHEN status != 'refunded' THEN total ELSE 0 END), 0) AS monthly_sales
+    FROM
+        (
+            SELECT DATE_FORMAT(CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY, '%Y-%m-%d') as calendar_date
+            FROM (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) a
+            CROSS JOIN (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) b
+            CROSS JOIN (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) c
+            WHERE DATE_FORMAT(CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY, '%Y-%m') <= DATE_FORMAT(CURDATE(), '%Y-%m')
+        ) calendar
+        LEFT JOIN orders ON DATE(orders.order_date) = calendar.calendar_date AND orders.status != 'refunded'
+    WHERE YEAR(calendar_date) = YEAR(CURDATE())
+    GROUP BY month
+    ORDER BY MIN(calendar_date) ASC;";
+    
+        $stmt = $connection->prepare($query);
+    
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $dailyName = array();
+            $dailySalesArray = array();
+    
+            while ($sales = $result->fetch_assoc()) {
+                $dailySalesArray[] = $sales['monthly_sales'];
+                $dailyName[] = $sales['month'];
+            }
+    
+            echo json_encode(array("sales" => $dailySalesArray, "days" => $dailyName));
+            exit;
+        } else {
+            // Handle the case where the query execution fails
+            echo json_encode(array("error" => "Query execution failed"));
+            exit;
+        }
+    }
+    if($_POST['action'] == "get_yearly_sales_chicken") {
+        $category = mysqli_real_escape_string($connection, $_POST['category']);
+        if($category == "Others"){
+            $query = "SELECT
+                    DATE_FORMAT(calendar_date, '%b') AS month,
+                    COALESCE(SUM(e.expense_total), 0) AS yearly_expense
+                FROM
+                    (
+                        SELECT DATE_FORMAT(CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY, '%Y-%m-%d') as calendar_date
+                        FROM (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) a
+                        CROSS JOIN (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) b
+                        CROSS JOIN (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) c
+                        WHERE DATE_FORMAT(CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY, '%Y-%m') <= DATE_FORMAT(CURDATE(), '%Y-%m')
+                    ) calendar
+                    LEFT JOIN expenseinventory e ON DATE(e.stock_date) = calendar.calendar_date
+                WHERE
+                    YEAR(calendar_date) = YEAR(CURDATE())
+                GROUP BY month
+                ORDER BY MIN(calendar_date) ASC;";
+                    
+            $stmt = $connection->prepare($query);
+        } else {
+        $query = "SELECT
+                DATE_FORMAT(calendar_date, '%b') AS month,
+                COALESCE(SUM(CASE WHEN si.stock_category = ? THEN si.expense_today ELSE 0 END), 0) AS yearly_expense
+            FROM
+                (
+                    SELECT DATE_FORMAT(CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY, '%Y-%m-%d') as calendar_date
+                    FROM (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) a
+                    CROSS JOIN (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) b
+                    CROSS JOIN (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) c
+                    WHERE DATE_FORMAT(CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY, '%Y-%m') <= DATE_FORMAT(CURDATE(), '%Y-%m')
+                ) calendar
+                LEFT JOIN stockinventory si ON DATE(si.stock_date) = calendar.calendar_date
+            WHERE
+                YEAR(calendar_date) = YEAR(CURDATE())
+            GROUP BY month
+            ORDER BY MIN(calendar_date) ASC;";
+                
+            $stmt = $connection->prepare($query);
+            $stmt->bind_param("s", $category);
+        }
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $dailyName = array();
+            $dailySalesArray = array();
+    
+            while ($sales = $result->fetch_assoc()) {
+                $dailySalesArray[] = $sales['yearly_expense'];
+                $dailyName[] = $sales['month'];
+            }
+    
+            echo json_encode(array("sales" => $dailySalesArray, "days" => $dailyName));
+            exit;
+        } else {
+            // Handle the case where the query execution fails
+            echo json_encode(array("error" => "Query execution failed"));
+            exit;
+        }
+    }
+    if($_POST['action'] == "get_yearly_orders") {
+        $category = mysqli_real_escape_string($connection, $_POST['category']);
+        $query = "SELECT
+                DATE_FORMAT(calendar_date, '%b') AS month,
+                COALESCE(COUNT(DISTINCT CASE WHEN c.category_id = ? THEN o.order_id END), 0) AS yearly_orders
+            FROM
+                (
+                    SELECT DATE_FORMAT(CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY, '%Y-%m-%d') as calendar_date
+                    FROM (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) a
+                    CROSS JOIN (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) b
+                    CROSS JOIN (SELECT 0 as a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) c
+                    WHERE DATE_FORMAT(CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY, '%Y-%m') <= DATE_FORMAT(CURDATE(), '%Y-%m')
+                ) calendar
+            LEFT JOIN orders o ON DATE(o.order_date) = calendar.calendar_date AND o.status != 'refunded'
+            LEFT JOIN orderItems oi ON o.order_id = oi.order_id
+            LEFT JOIN items i ON oi.item_id = i.item_id
+            LEFT JOIN category c ON i.category_id = c.category_id
+            WHERE
+                YEAR(calendar_date) = YEAR(CURDATE())
+            GROUP BY month
+            ORDER BY MIN(calendar_date) ASC;";
+    
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param("i", $category);
+    
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $dailyName = array();
+            $dailySalesArray = array();
+    
+            while ($sales = $result->fetch_assoc()) {
+                $dailySalesArray[] = $sales['yearly_orders'];
+                $dailyName[] = $sales['month'];
+            }
+    
+            echo json_encode(array("sales" => $dailySalesArray, "days" => $dailyName));
+            exit;
+        } else {
+            // Handle the case where the query execution fails
+            echo json_encode(array("error" => "Query execution failed"));
+            exit;
+        }
+    }
 }
 ?>
