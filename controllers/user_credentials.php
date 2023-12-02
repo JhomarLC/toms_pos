@@ -6,7 +6,7 @@ if (isset($_POST['login'])) {
     $username = mysqli_real_escape_string($connection, $_POST['username']);
     $password = mysqli_real_escape_string($connection, $_POST['password']);
     
-    $query = "SELECT * FROM accounts WHERE username = ?";
+    $query = "SELECT * FROM accounts WHERE username = ? AND status != 'Inactive'";
     $stmt = $connection->prepare($query);
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -58,7 +58,7 @@ if (isset($_POST['action'])) {
         $username = mysqli_real_escape_string($connection, $_POST['username']);
         $password = mysqli_real_escape_string($connection, $_POST['password']);
         
-        $query = "SELECT * FROM accounts WHERE username = ?";
+        $query = "SELECT * FROM accounts WHERE username = ? AND status != 'Inactive'";
         $stmt = $connection->prepare($query);
         $stmt->bind_param("s", $username);
         $stmt->execute();
