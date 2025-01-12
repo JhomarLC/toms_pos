@@ -503,7 +503,7 @@ const SaveOrder = () => {
 	}
 
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/order.php", // Action
+		url: window.location.origin + "/controllers/order.php", // Action
 		type: "POST", // Method
 		data: {
 			action: "save_order",

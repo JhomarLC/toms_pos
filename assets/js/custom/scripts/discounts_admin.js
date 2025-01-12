@@ -247,7 +247,7 @@ var modalEditCategory = new bootstrap.Modal(
 
 const AddVoucher = () => {
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/discounts.php", // Action
+		url: window.location.origin + "/controllers/discounts.php", // Action
 		type: "POST", // Method
 		data: {
 			action: "add_voucher",
@@ -268,7 +268,7 @@ const AddVoucher = () => {
 
 const UpdateCategory = () => {
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/discounts.php", // Action
+		url: window.location.origin + "/controllers/discounts.php", // Action
 		type: "POST", // Method
 		data: {
 			action: "update_voucher",
@@ -315,7 +315,7 @@ const SetStatus = (voucher_id, status) => {
 };
 const SetNow = (voucher_id, status) => {
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/discounts.php",
+		url: window.location.origin + "/controllers/discounts.php",
 		type: "POST",
 		data: {
 			action: "set_status",
@@ -339,7 +339,7 @@ const GetEditValue = (voucher_id) => {
 	// Trigger validation after reading default values
 	if (voucher_id !== "") {
 		$.ajax({
-			url: window.location.origin + "/TOM_S1/controllers/discounts.php",
+			url: window.location.origin + "/controllers/discounts.php",
 			type: "POST",
 			data: {
 				action: "get_voucher_details",

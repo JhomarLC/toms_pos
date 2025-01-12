@@ -270,7 +270,7 @@ var modalEditStock = new bootstrap.Modal(
 
 function AddStock() {
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/stock_inventory.php",
+		url: window.location.origin + "/controllers/stock_inventory.php",
 		type: "POST",
 		data: {
 			action: "add_stock",
@@ -310,9 +310,7 @@ const GetEditValueStock = (stock_id) => {
 	// // Trigger validation after reading default values
 	if (stock_id !== "") {
 		$.ajax({
-			url:
-				window.location.origin +
-				"/TOM_S1/controllers/stock_inventory.php",
+			url: window.location.origin + "/controllers/stock_inventory.php",
 			type: "POST",
 			data: {
 				action: "get_stock_details",
@@ -337,7 +335,7 @@ const GetEditValueStock = (stock_id) => {
 
 const UpdateStock = () => {
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/stock_inventory.php", // Action
+		url: window.location.origin + "/controllers/stock_inventory.php", // Action
 		type: "POST", // Method
 		data: {
 			action: "update_stock",

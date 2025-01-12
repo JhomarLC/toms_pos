@@ -233,7 +233,7 @@ const AddCategory = () => {
 	}
 	// User clicked "Yes"
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/menu.php", // Action
+		url: window.location.origin + "/controllers/menu.php", // Action
 		type: "POST", // Method
 		data: form_data,
 		processData: false,
@@ -261,7 +261,7 @@ const UpdateCategory = () => {
 	form_data.append("category_name", $("[name='category_name_edit']").val());
 
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/menu.php", // Action
+		url: window.location.origin + "/controllers/menu.php", // Action
 		type: "POST", // Method
 		data: form_data,
 		processData: false,
@@ -306,7 +306,7 @@ const ArchiveCategory = (category_id, status) => {
 };
 const ArchiveNow = (category_id, status) => {
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/menu.php",
+		url: window.location.origin + "/controllers/menu.php",
 		type: "POST",
 		data: {
 			action: "archive_category",
@@ -330,7 +330,7 @@ const GetEditValue = (category_id) => {
 	// Trigger validation after reading default values
 	if (category_id !== "") {
 		$.ajax({
-			url: window.location.origin + "/TOM_S1/controllers/menu.php",
+			url: window.location.origin + "/controllers/menu.php",
 			type: "POST",
 			data: {
 				action: "get_category_details",

@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 					remote: {
 						url:
 							window.location.origin +
-							"/TOM_S1/controllers/validusername.php",
+							"/controllers/validusername.php",
 						data: function () {
 							return {
 								username:
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 					remote: {
 						url:
 							window.location.origin +
-							"/TOM_S1/controllers/validusername.php",
+							"/controllers/validusername.php",
 						data: function () {
 							return {
 								username:
@@ -437,7 +437,7 @@ document.onreadystatechange = function () {
 };
 const AddStaff = () => {
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/accounts.php", // Action
+		url: window.location.origin + "/controllers/accounts.php", // Action
 		type: "POST", // Method
 		data: {
 			action: "add_staff",
@@ -462,7 +462,7 @@ const AddStaff = () => {
 const UpdateStaff = () => {
 	// User clicked "Yes"
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/accounts.php", // Action
+		url: window.location.origin + "/controllers/accounts.php", // Action
 		type: "POST", // Method
 		data: {
 			action: "update_staff",
@@ -490,7 +490,7 @@ const GetEditValue = (staff_id) => {
 	// Trigger validation after reading default values
 	if (staff_id !== "") {
 		$.ajax({
-			url: window.location.origin + "/TOM_S1/controllers/accounts.php",
+			url: window.location.origin + "/controllers/accounts.php",
 			type: "POST",
 			data: {
 				action: "get_staff_details",

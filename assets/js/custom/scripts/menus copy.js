@@ -161,7 +161,7 @@ const GetEditValue = (category_id) => {
 	// Trigger validation after reading default values
 	// if (staff_id !== "") {
 	// 	$.ajax({
-	// 		url: window.location.origin + "/TOM_S1/controllers/menu.php",
+	// 		url: window.location.origin + "/controllers/menu.php",
 	// 		type: "POST",
 	// 		data: {
 	// 			action: "get_staff_details",

@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		voucherSelect.appendChild(emptyVoucherOption);
 
 		$.ajax({
-			url: window.location.origin + "/TOM_S1/controllers/discounts.php", // Action
+			url: window.location.origin + "/controllers/discounts.php", // Action
 			type: "POST", // Method
 			data: {
 				action: "get_vouchers",
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		itemSelect.appendChild(emptyItemOption);
 
 		$.ajax({
-			url: window.location.origin + "/TOM_S1/controllers/discounts.php", // Action
+			url: window.location.origin + "/controllers/discounts.php", // Action
 			type: "POST", // Method
 			data: {
 				action: "get_items",

@@ -22,7 +22,7 @@ var modalViewOrder = new bootstrap.Modal(
 
 const ViewOrder = (order_id) => {
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/view_order.php",
+		url: window.location.origin + "/controllers/view_order.php",
 		type: "POST",
 		data: { action: "get_order_items", order_id: order_id },
 		dataType: "JSON",
@@ -46,7 +46,7 @@ const PrintOrder = () => {
 		order_date: $('input[name="order_date"]').val(),
 	};
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/staff/print/index.php",
+		url: window.location.origin + "/staff/print/index.php",
 		type: "POST",
 		data: formData,
 		dataType: "JSON",
@@ -80,7 +80,7 @@ const RefundOrder = (order_id) => {
 };
 const RefundNow = (order_id) => {
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/view_order.php",
+		url: window.location.origin + "/controllers/view_order.php",
 		type: "POST",
 		data: { action: "refund_order", order_id: order_id },
 		dataType: "JSON",

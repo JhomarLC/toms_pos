@@ -283,9 +283,7 @@ const AddExpense = () => {
 	}
 	console.log(expense_name);
 	$.ajax({
-		url:
-			window.location.origin +
-			"/TOM_S1/controllers/expense_inventory.php",
+		url: window.location.origin + "/controllers/expense_inventory.php",
 		type: "POST",
 		data: {
 			action: "add_expense",
@@ -309,9 +307,7 @@ const GetEditValueExpense = (expense_id) => {
 	// Trigger validation after reading default values
 	if (expense_id !== "") {
 		$.ajax({
-			url:
-				window.location.origin +
-				"/TOM_S1/controllers/expense_inventory.php",
+			url: window.location.origin + "/controllers/expense_inventory.php",
 			type: "POST",
 			data: {
 				action: "get_expense_details",
@@ -346,9 +342,7 @@ const ChangeCategory = () => {
 
 const UpdateExpense = () => {
 	$.ajax({
-		url:
-			window.location.origin +
-			"/TOM_S1/controllers/expense_inventory.php", // Action
+		url: window.location.origin + "/controllers/expense_inventory.php", // Action
 		type: "POST", // Method
 		data: {
 			action: "update_expense",
@@ -389,9 +383,7 @@ const DeleteExpense = (expense_id) => {
 
 const DeleteNow = (expense_id) => {
 	$.ajax({
-		url:
-			window.location.origin +
-			"/TOM_S1/controllers/expense_inventory.php", // Action
+		url: window.location.origin + "/controllers/expense_inventory.php", // Action
 		type: "POST", // Method
 		data: {
 			action: "delete_expense",

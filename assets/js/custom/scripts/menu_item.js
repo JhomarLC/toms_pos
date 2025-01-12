@@ -284,7 +284,7 @@ const AddItem = () => {
 	form_data.append("description", $('[name="description"]').val());
 
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/menu.php",
+		url: window.location.origin + "/controllers/menu.php",
 		type: "POST",
 		data: form_data,
 		processData: false,
@@ -316,7 +316,7 @@ const UpdateItem = () => {
 	form_data.append("description", $('[name="description_edit"]').val());
 
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/menu.php", // Action
+		url: window.location.origin + "/controllers/menu.php", // Action
 		type: "POST", // Method
 		data: form_data,
 		processData: false,
@@ -338,7 +338,7 @@ const GetEditValueItem = (item_id) => {
 	// Trigger validation after reading default values
 	if (item_id !== "") {
 		$.ajax({
-			url: window.location.origin + "/TOM_S1/controllers/menu.php",
+			url: window.location.origin + "/controllers/menu.php",
 			type: "POST",
 			data: {
 				action: "get_item_details",
@@ -393,7 +393,7 @@ const ArchiveItem = (item_id, status) => {
 };
 const ArchiveNow = (item_id, status) => {
 	$.ajax({
-		url: window.location.origin + "/TOM_S1/controllers/menu.php",
+		url: window.location.origin + "/controllers/menu.php",
 		type: "POST",
 		data: { action: "archive_item", item_id: item_id, status: status },
 		dataType: "JSON",
