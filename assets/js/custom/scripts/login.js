@@ -70,8 +70,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
 const LoginNow = () => {
 	$.ajax({
-		url:
-			window.location.origin + "/TOM_S1/controllers/user_credentials.php", // Action
+		url: window.location.origin + "/controllers/user_credentials.php", // Action
 		type: "POST", // Method
 		data: {
 			action: "login_account",
