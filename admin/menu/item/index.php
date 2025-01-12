@@ -112,7 +112,7 @@
                                         </i>
                                         <input type="text" data-kt-user-table-filter="search_item"
                                             class="form-control form-control-solid w-250px ps-13"
-                                            placeholder="Search Category" />
+                                            placeholder="Search Item" />
                                     </div>
                                     <!--end::Search-->
                                 </div>

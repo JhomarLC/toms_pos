@@ -121,6 +121,7 @@ if(isset($_POST['action'])){
         $email = mysqli_real_escape_string($connection, $_POST['email']);
         $password = mysqli_real_escape_string($connection, $_POST['password']);
         $cpassword = mysqli_real_escape_string($connection, $_POST['cpassword']);
+        
         $query = "SELECT * FROM accounts WHERE username = ?";
         $stmt = $connection->prepare($query);
         $stmt->bind_param("s", $username);

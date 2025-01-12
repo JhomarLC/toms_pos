@@ -4,10 +4,11 @@ require("../../controllers/db_connection.php");
 
 $user = json_decode($_COOKIE['account_signed_in'], true);
 $activity_description = "Accessing the admin page";
+$activity_category = "Illegal Actions";
 
-$query = "INSERT INTO activitylog (account_id, activity_description) VALUES (?, ?)";
+$query = "INSERT INTO activitylog (account_id, activity_category, activity_description) VALUES (?, ?, ?)";
 $stmt = $connection->prepare($query);
-$stmt->bind_param("is", $user['account_id'], $activity_description);
+$stmt->bind_param("iss", $user['account_id'], $activity_category, $activity_description);
 $stmt->execute();
 
 if($stmt->affected_rows > 0){

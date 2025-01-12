@@ -149,6 +149,9 @@
                                                 <option value="Refund">
                                                     Refunds
                                                 </option>
+                                                <option value="Illegal Actions">
+                                                    Illegal Actions
+                                                </option>
                                                 <option value="Stock">
                                                     Stocks
                                                 </option>
